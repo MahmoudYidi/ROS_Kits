@@ -40,3 +40,39 @@ if __name__ == '__main__':
     except rospy.ROSInterruptException:
         pass
 #####################################################################################
+
+import rospy
+from std_msgs.msg import Int32
+
+def callback(data, pub_add, pub_sub):
+    # Perform addition operation
+    result_add = data.data + 5  # Add 5 to the received data
+
+    # Publish the addition result to the 'result_add' topic
+    pub_add.publish(Int32(result_add))
+
+    # Perform subtraction operation
+    result_sub = data.data - 2  # Subtract 2 from the received data
+
+    # Publish the subtraction result to the 'result_sub' topic
+    pub_sub.publish(Int32(result_sub))
+
+def subscribe_and_publish():
+    # Initialize the ROS node
+    rospy.init_node('math_operations_node', anonymous=True)
+
+    # Create a subscriber on the 'input_data' topic with Int32 message type
+    rospy.Subscriber('input_data', Int32, callback, callback_args=(pub_add, pub_sub))
+
+    # Create publishers for addition and subtraction results
+    pub_add = rospy.Publisher('result_add', Int32, queue_size=10)
+    pub_sub = rospy.Publisher('result_sub', Int32, queue_size=10)
+
+    # Spin to keep the node alive and continue receiving and publishing messages
+    rospy.spin()
+
+if __name__ == '__main__':
+    try:
+        subscribe_and_publish()
+    except rospy.ROSInterruptException:
+        pass
