@@ -46,7 +46,7 @@ def action_client():
     goal.numbers = [1, 2, 3, 4, 5]  # Replace with your numbers
 
     client.send_goal(goal)
-    client.wait_for_result()
+    client.wait_for_result() ####
 
     result = client.get_result()
     rospy.loginfo("Result: %d", result.sum)
